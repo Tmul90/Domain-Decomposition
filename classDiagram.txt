@@ -1,3 +1,58 @@
 @startuml
-A <|-- B
+
+interface IWeapon {
+	+Shoot()
+}
+
+interface IGadget {
+	+Deploy()
+}
+
+interface IThrowable {
+	+Use()
+}
+
+interface IDrillerPrimary extends IWeapon
+
+abstract class Equipment {
+	+name: String
+}
+
+abstract class Weapon extends Equipment implements IWeapon {
+	+ammo: Int
+}
+
+class PrimaryWeapon extends Weapon
+class SecondaryWeapon extends Weapon
+
+abstract class Throwable extends Equipment implements IThrowable
+class Gadget extends Equipment implements IGadget
+
+' Driller
+class Flamethrower extends PrimaryWeapon
+class WaveCooker extends SecondaryWeapon
+class PowerDrills extends Gadget
+class ImpactAxe extends Throwable
+
+abstract class ClassBase {
+	+name: String
+	+equip(e: Equipment)
+}
+
+class Driller extends ClassBase
+class Engineer extends ClassBase
+class Gunner extends ClassBase
+class Scout extends ClassBase
+
+Driller --> "1.." Equipment
+Engineer --> "1.." Equipment
+Gunner --> "1.." Equipment
+Scout --> "1.." Equipment
+
+' Example
+Driller --> Flamethrower
+Driller --> WaveCooker
+Driller --> PowerDrills
+Driller --> ImpactAxe
+
 @enduml
