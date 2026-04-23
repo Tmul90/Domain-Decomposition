@@ -6,12 +6,48 @@ interface IWeapon {
 	+Shoot()
 }
 
-interface IGadget {
-	+Deploy()
-}
-
 interface IThrowable {
 	+Use()
+}
+
+interface IExplodable {
+	+Explode()
+}
+
+interface INonExplodingThrowable {
+	+Hit()
+}
+
+interface IDrillerEquipment {
+	+Action()
+}
+
+' Equipment Attributes
+' ====================
+abstract class Attribute {
+	+name: String
+}
+
+class DamageAttribute extends Attribute {
+	+damageAmount: Float
+	+type: String ' "Kinetic", "Explosive", "Fire", "Frost" '
+}
+
+class RadiusAttribute extends Attribute {
+    +value: Float
+}
+
+class FuseAttribute extends Attribute {
+    +time: Float
+}
+
+class CooldownAttribute extends Attribute {
+    +time: Float
+}
+
+class StatusEffectAttribute extends Attribute {
+    +effect: String
+    +duration: Float
 }
 
 ' Equipment Base Classes
@@ -29,10 +65,18 @@ class Gadget extends Equipment implements IGadget
 
 ' Driller
 ' ====================
-class Flamethrower extends PrimaryWeapon
-class WaveCooker extends SecondaryWeapon
-class PowerDrills extends Gadget
-class ImpactAxe extends Throwable
+class Flamethrower extends Equipment implements IDrillerEquipment, IWeapon
+class WaveCooker extends Equipment implements IDrillerEquipment, IWeapon
+class PowerDrills extends Equipment implements IDrillerEquipment
+class ImpactAxe extends Equipment implements INonExplodingThrowable, IThrowable
+
+Flamethrower *-- DamageAttribute : FireDamage
+Flamethrower *-- StatusEffectAttribute : Ignite
+WaveCooker *-- DamageAttribute : PhysicalDamage
+WaveCooker *-- StatusEffectAttribute : Stun
+ImpactAxe *-- DamageAttribute : PhysicalDamage
+ImpactAxe *-- StatusEffectAttribute : Knockback
+PowerDrills *-- StatusEffectAttribute : DrillSpeedBoost
 
 ' Classes
 ' ====================
