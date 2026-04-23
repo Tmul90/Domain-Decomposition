@@ -1,4 +1,5 @@
 @startuml
+left to right direction
 
 ' Interfaces
 ' ====================
@@ -10,8 +11,12 @@ interface IThrowable {
 	+Use()
 }
 
-interface IExplodable {
-	+Explode()
+interface IGadget {
+	+Deploy()
+}
+
+interface IExplodable { 
+	+Explode() 
 }
 
 interface INonExplodingThrowable {
@@ -22,8 +27,8 @@ interface IDrillerEquipment {
 	+Action()
 }
 
-' Equipment Attributes
-' ====================
+' Attributes
+' ==================== 
 abstract class Attribute {
 	+name: String
 }
@@ -34,20 +39,24 @@ class DamageAttribute extends Attribute {
 }
 
 class RadiusAttribute extends Attribute {
-    +value: Float
+	+value: Float
 }
 
 class FuseAttribute extends Attribute {
-    +time: Float
+	+time: Float
 }
 
 class CooldownAttribute extends Attribute {
-    +time: Float
+	+time: Float
+}
+
+class DurationAttribute extends Attribute {
+	+time: Float
 }
 
 class StatusEffectAttribute extends Attribute {
-    +effect: String
-    +duration: Float
+	+effect: String
+	+duration: Float
 }
 
 ' Equipment Base Classes
@@ -56,30 +65,38 @@ abstract class Equipment {
 	+name: String
 }
 
+class Gadget extends Equipment implements IGadget
 abstract class Weapon extends Equipment implements IWeapon
 class PrimaryWeapon extends Weapon
 class SecondaryWeapon extends Weapon
 
 abstract class Throwable extends Equipment implements IThrowable
-class Gadget extends Equipment implements IGadget
 
-' Driller
-' ====================
-class Flamethrower extends Equipment implements IDrillerEquipment, IWeapon
-class WaveCooker extends Equipment implements IDrillerEquipment, IWeapon
-class PowerDrills extends Equipment implements IDrillerEquipment
+' Driller Equipment
+' ==================== 
+class Flamethrower extends Equipment implements IDrillerEquipment
+class WaveCooker extends Equipment implements IDrillerEquipment
+class PowerDrills extends Gadget implements IDrillerEquipment
+class SatchelCharge extends Gadget implements IDrillerEquipment, IThrowable, IExplodable
 class ImpactAxe extends Equipment implements INonExplodingThrowable, IThrowable
 
-Flamethrower *-- DamageAttribute : FireDamage
-Flamethrower *-- StatusEffectAttribute : Ignite
+Flamethrower *-- DamageAttribute : FireDamage(25)
+Flamethrower *-- StatusEffectAttribute : Ignite(5s)
+
 WaveCooker *-- DamageAttribute : PhysicalDamage
 WaveCooker *-- StatusEffectAttribute : Stun
+
 ImpactAxe *-- DamageAttribute : PhysicalDamage
 ImpactAxe *-- StatusEffectAttribute : Knockback
+
 PowerDrills *-- StatusEffectAttribute : DrillSpeedBoost
 
+SatchelCharge *-- DamageAttribute : ExplosiveDamage
+SatchelCharge *-- RadiusAttribute : BlastRadius
+SatchelCharge *-- FuseAttribute : FuseTime
+
 ' Classes
-' ====================
+' ==================== 
 abstract class ClassBase {
 	+name: String
 	+equip(e: Equipment)
@@ -91,9 +108,10 @@ class Gunner extends ClassBase
 class Scout extends ClassBase
 
 ' Class Equipment Exapmle
-Driller --> Flamethrower
-Driller --> WaveCooker
-Driller --> PowerDrills
-Driller --> ImpactAxe
+Driller o-- Flamethrower
+Driller o-- WaveCooker
+Driller o-- PowerDrills
+Driller o-- SatchelCharge
+Driller o-- ImpactAxe
 
 @enduml
