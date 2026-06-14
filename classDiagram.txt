@@ -3,7 +3,13 @@ left to right direction
 
 ' Interfaces
 ' ====================
+interface IOverClock {
+	+Overclock
+	+Shoot()
+}
+
 interface IWeapon {
+	+Overclock
 	+Shoot()
 }
 
