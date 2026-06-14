@@ -75,6 +75,11 @@ abstract class Equipment {
 class Gadget extends Equipment implements IGadget
 abstract class Weapon extends Equipment implements IWeapon
 class PrimaryWeapon extends Weapon
+class CrispyFlames extends FlameThrower
+class CrispyFlames extends IOverClock
+class StickyFlames extends FlameThrower
+class StickyFlames extends IOverClock
+
 class SecondaryWeapon extends Weapon
 
 abstract class Throwable extends Equipment implements IThrowable
