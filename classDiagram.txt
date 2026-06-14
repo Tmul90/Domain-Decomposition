@@ -3,6 +3,7 @@ left to right direction
 
 ' Interfaces
 ' ====================
+
 interface IOverClock {
 	+Overclock
 	+Shoot()
@@ -115,6 +116,8 @@ class Scout extends ClassBase
 
 ' Class Equipment Exapmle
 Driller o-- Flamethrower
+Driller o-- StickyFlames
+Driller o-- CrispyFlames
 Driller o-- WaveCooker
 Driller o-- PowerDrills
 Driller o-- SatchelCharge
